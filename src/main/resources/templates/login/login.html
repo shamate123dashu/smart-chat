@@ -1,0 +1,174 @@
+<!DOCTYPE html>
+<html lang="zh-CN" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>登录</title>
+    <style>
+        body {
+            background: url('images/login.jpg') no-repeat;
+            background-size: 100% auto;
+        }
+
+        #login_box {
+            width: 20%;
+            height: 300px;
+            background-color: #00000085;
+            margin: auto;
+            margin-top: 5%;
+            text-align: center;
+            border-radius: 200px;
+            padding: 50px 50px;
+        }
+
+        #login_box input,
+        #login_box button {
+            outline: none;
+        }
+
+        #login_box h2 {
+            color: #ffffff90;
+            margin-top: 5%;
+        }
+
+        #login_box #form #input_box {
+            margin-top: 5%;
+        }
+
+        #login_box #form #input_box input {
+            border: 0;
+            width: 80%;
+            font-size: 15px;
+            color: black;
+            background: #ffffff90;
+            border-bottom: 2px solid #ffffff;
+            padding: 5px 10px;
+            margin-top: 10px;
+        }
+
+        #login_box button {
+            margin-top: 20px;
+            width: 70%;
+            height: 30px;
+            border-radius: 10px;
+            border: 0;
+            color: #fff;
+            font-size: 15px;
+            background-image: linear-gradient(120deg, #f093fb 0%, #f5576c 100%);
+            cursor: pointer;
+            left: 100px;
+        }
+
+    </style>
+    <script src="webjars/jquery/3.1.1/jquery.min.js"></script>
+    <script>
+        window.onload=function () {
+            var enroll = document.getElementById("enroll");
+            var head01 = document.getElementById("head01");
+            var login01 = document.getElementById("login01");
+            enroll.onclick = function () {
+                head01.innerText = "注册";
+                login01.innerText = "";
+                enroll.onclick=function (){
+                    enroll.click = register();
+                }
+            }
+        }
+        function register(){
+            if (userLeave()&&passLeave()){
+            var user = document.getElementById("user");
+            var pass = document.getElementById("pass");
+            $.ajax({
+                url: "/register",
+                type:"POST",
+                data: {
+                    username: user.value,
+                    password: pass.value
+                },
+                error: function () {
+                    alert("注册失败")
+                },
+                success: function (date) {
+
+                    if (date=="注册成功！"){
+                        alert(date+"\n点确定自动跳转！")
+                        window.location.href="/";
+                    }
+                    else if (date=="账户名重复"){
+                        var a=document.getElementById("aao");
+                        a.innerText=date;
+                    }
+                    else {
+                        var uu = document.getElementById("uu1");
+                        uu.innerText=date;
+                    }
+
+                }
+            })}
+        }
+        function userLeave(){
+            var user = document.getElementById("user");
+            var tip = document.getElementById("tips01");
+            if (head01.innerText != "注册"){
+                return ;
+            }
+            if(user.value.length<8 || user.value.length>12){
+                tip.innerText="用户名长度应该为8到12！";
+                return false;
+            }else {
+                tip.innerText="";
+                return true;
+            }
+        }
+        function passLeave(){
+            var pass = document.getElementById("pass");
+            var tip = document.getElementById("tips02");
+            if (head01.innerText != "注册"){
+                return ;
+            }
+            if(pass.value.length<8 || pass.value.length>12){
+                tip.innerText="密码长度应该为8到12！";
+                return false;
+            }
+            else {
+                tip.innerText="";
+                return true;
+            }
+
+        }
+
+    </script>
+
+
+</head>
+<body>
+<div id="login_box">
+    <h2 id="head01">Smart Chat</h2>
+    <form method="post" action="/login" id="form01">
+        <div id="form">
+            <div id="input_box">
+                <input type="text" onblur=userLeave() name="username" id="user" placeholder="请输入用户名">
+            </div>
+                <label style="color: red;font-size: 17px;" id="tips01"></label>
+            <div id="input_box">
+                <input type="password" onblur=passLeave() name="password" id="pass" placeholder="请输入密码">
+            </div>
+            <label style="color: red;font-size: 17px;" id="tips02"></label>
+        </div>
+        <div id="login01">
+            <button id="sign_in">登录</button>
+        </div>
+        <button id="enroll" type="button">注册</button>
+    </form>
+
+    <br>
+    <label style="color: red;font-size: 17px;"  id="aao">[[${session.status}]]</label>
+</div>
+<div>
+    <h1 style="font-size:120px;color: aqua" align="center" id="uu1">Smart</h1>
+</div>
+
+</body>
+
+</html>

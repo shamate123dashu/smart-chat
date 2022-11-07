@@ -1,0 +1,246 @@
+.title01 {
+    width: 130px; /* 宽度 */
+    height: 44px; /* 高度 */
+    border-width: 0px; /* 边框宽度 */
+    border-radius: 3px; /* 边框半径 */
+    background: #1E90FF; /* 背景颜色 */
+    cursor: pointer; /* 鼠标移入按钮范围时出现手势 */
+    outline: none; /* 不显示轮廓线 */
+    font-family: Microsoft YaHei; /* 设置字体 */
+    color: white; /* 字体颜色 */
+}
+
+.title02 {
+    position: absolute;
+    left: 247px;
+    top: 0px;
+    width: 32px; /* 宽度 */
+    height: 32px;
+    background: url('../images/down.png') no-repeat;
+    background-size: 100% auto;
+    border-color: #48fcff;
+    border-radius: 15px;
+}
+
+.add {
+    position: absolute;
+    left: 247px;
+    top: 32px;
+    width: 32px; /* 宽度 */
+    height: 32px;
+    background: url('../images/add.png') no-repeat;
+    background-size: 100% auto;
+    border-color: #48fcff;
+    border-radius: 15px;
+}
+
+.name {
+    font-size: large;
+}
+
+.i01 {
+    height: 17px;
+    width: 17px;
+    border: 2px solid grey;
+    border-radius: 25px;
+}
+
+.addFriend {
+    position: relative;
+    width: 418px;
+    height: 320px;
+    float: left;
+    /*background: #ddebff;*/
+    border: 2px solid #81bcff;
+}
+
+.addTitle {
+    position: absolute;
+    top: 35px;
+    left: 87px;
+    font-family: "YouYuan";
+}
+
+.search01 {
+    height: 30px;
+    width: 330px;
+    position: absolute;
+    top: 100px;
+    left: 25px;
+    border: 2px black solid;
+}
+
+.searchB {
+    position: absolute;
+    top: 100px;
+    left: 370px;
+    height: 30px;
+    width: 30px;
+    background: url("../images/search.png");
+    background-size: 100% auto;
+    border: #fdfdff;
+}
+
+.off01 {
+    position: absolute;
+    left: 382px;
+    height: 30px;
+    width: 32px;
+    background: url("../images/off.png");
+    background-size: 100% auto;
+    border: #fdfdff;
+    border-radius: 15px;
+}
+
+.af01 {
+    position: absolute;
+    top: 160px;
+    left: 25px;
+    width: 330px;
+}
+
+.addB {
+    position: absolute;
+    top: 192px;
+    left: 370px;
+    height: 30px;
+    width: 30px;
+    background: url("../images/add01.png");
+    background-size: 100% auto;
+    border: #fdfdff;
+}
+
+.chatView {
+    position: relative;
+    width: 418px;
+    height: 760px;
+    /*background: #ddebff;*/
+    float: left;
+    border: 2px solid #81bcff;
+    border-radius: 15px;
+}
+
+.top1 {
+    background: rgb(255, 255, 255);
+    border-bottom: 1px solid #5cd3ff;
+    position: relative;
+    width: 415px;
+    height: 60px;
+    border-top-left-radius: 15px;
+    border-top-right-radius: 15px;
+}
+
+.img1 {
+    position: absolute;
+    top: 10px;
+    left: 15px;
+    display: block;
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    -moz-border-radius: 50%;
+    -webkit-border-radius: 50%
+}
+
+.img2 {
+    position: absolute;
+    display: block;
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    -moz-border-radius: 50%;
+    -webkit-border-radius: 50%
+}
+
+.img3 {
+    position: absolute;
+    top: 3px;
+    left: 320px;
+    display: block;
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    -moz-border-radius: 50%;
+    -webkit-border-radius: 50%
+}
+
+.timeView {
+    position: absolute;
+    top: 40px;
+    left: 280px;
+}
+
+.nameA0 {
+    position: absolute;
+    top: 5px;
+    left: 70px;
+    font-size: 20px;
+}
+
+.chatMess {
+    position: relative;
+    top: 5px;
+    left: 50px;
+    width: 280px;
+    font-size: 20px;
+    border-radius: 15px;
+    border: 2px solid #3295ff;
+    background-color: #63f0ff;
+    word-wrap: break-word;
+    word-break: break-all;
+}
+
+.chatMess2 {
+    position: relative;
+    top: 5px;
+    left: 26px;
+    width: 280px;
+    font-size: 20px;
+    border-radius: 15px;
+    border: 2px solid #3295ff;
+    background-color: #63f0ff;
+    word-wrap: break-word;
+    word-break: break-all;
+}
+
+.inputView {
+    background: rgb(255, 255, 255);
+    border-top: 1px solid #0f16ff;
+    position: absolute;
+    top: 650px;
+    width: 415px;
+    height: 106px;
+}
+
+.sendB {
+    float: right;
+    width: 50px;
+    height: 106px;
+    font-size: 25px;
+    font-family: "Andale Mono";
+    border-color: #c3f8ff;
+    border-bottom-right-radius: 15px;
+}
+
+.chatContent {
+    position: absolute;
+    top: 60px;
+    width: 360px;
+}
+
+.messC {
+    position: relative;
+    top: 10px;
+    left: 15px;
+    width: 320px;
+    margin-bottom: 15px;
+}
+
+.messCB {
+    position: relative;
+    top: 10px;
+    left: 40px;
+    width: 340px;
+    margin-bottom: 15px;
+}
+

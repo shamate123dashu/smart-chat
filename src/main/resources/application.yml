@@ -1,0 +1,42 @@
+spring:
+  datasource:
+    url: jdbc:mysql://localhost:3306/smartchat
+    username: root
+    password: 123456
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    druid:
+      aop-patterns: com.system.webadmin.* #监控SpringBean
+      filters: stat,wall,slf4j #底层开启功能，stat（sql监控），wall（防火墙）
+
+      stat-view-servlet:
+        enabled: true
+        login-username: admin
+        login-password: 123456
+        reset-enable: false
+
+      web-stat-filter:
+        enabled: true
+        url-pattern: /*
+        exclusions: '*.js,*.gif,*.png,*.jpg,*.css,*.ico,/druid/*'
+
+      filter:
+        stat:
+          slow-sql-millis: 1000
+          logSlowSql: true
+          enabled: true
+        wall:
+          enabled: true
+          config:
+            drop-table-allow: false
+
+  boot:
+    admin:
+      client:
+        url: http://localhost:8888
+login:
+  maxNumber : 5 #设置最大的登录次数
+  maxLockTime: 5000
+
+register:
+  minLength: 7
+  maxLength: 13
