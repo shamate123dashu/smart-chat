@@ -20413,7 +20413,7 @@ span.ivu-date-picker-cells-cell-disabled.ivu-date-picker-cells-cell-selected em 
 
 .compatible, .compatible > * {
     -webkit-box-sizing: unset;
-    box-sizing: unset
+    box-sizing: unset;
 }
 
 .window-drag {

@@ -3,6 +3,7 @@ package com.smart.smartchat;
 import com.smart.smartchat.Bean.information;
 import com.smart.smartchat.Bean.text;
 import com.smart.smartchat.Service.friendView.friendView;
+import com.smart.smartchat.Service.mess.message;
 import com.smart.smartchat.mapper.friendView.checkFriend;
 import com.smart.smartchat.mapper.login.check_user;
 import com.smart.smartchat.mapper.mess.sendMess;
@@ -31,6 +32,8 @@ class SmartChatApplicationTests
     friendView friendView;
     @Autowired
     sendMess sendMess;
+    @Autowired
+    message message;
     @Value("${login.maxNumber}")
     private int a;
     @Value("${login.maxLockTime}")
@@ -105,4 +108,10 @@ class SmartChatApplicationTests
         List<text> texts = sendMess.selectMess("admin", "aaasss12", 0, 0);
         System.out.println(texts.get(0).getTime());
     }
+    @Test
+    void aad(){
+//        System.out.println(friendView.search("aaasss12"));
+        System.out.println(sendMess.selectMess("admin", "aaasss12", null, 0));
+    }
+
 }

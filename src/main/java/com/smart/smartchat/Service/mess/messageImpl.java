@@ -39,6 +39,7 @@ public class messageImpl implements message
         }
     }
 
+
     /**
      * 根据参数查找信息,并将信息转换为json字符串
      * @param nameA 发送方
@@ -78,4 +79,24 @@ public class messageImpl implements message
         }
         else return false;
     }
+
+    @Override
+    public String chat(String nameA, String nameB, String message)
+    {
+        //1.存储信息；
+        sendMess.insertMess(nameA,nameB,message,1);
+        text text = new text(message);
+        text.setNameA(nameA);
+        text.setNameB(nameB);
+        text.setMessType(1);
+        text.setStatus(0);
+        Map<String,text> map=new HashMap<>();
+        map.put("mess0",text);
+        String s = JSON.toJSONString(map);
+        System.out.println(s);
+        return s;
+    }
+
+
+
 }

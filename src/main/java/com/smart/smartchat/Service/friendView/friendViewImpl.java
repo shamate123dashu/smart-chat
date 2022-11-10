@@ -3,6 +3,7 @@ package com.smart.smartchat.Service.friendView;
 import com.alibaba.fastjson.JSON;
 import com.smart.smartchat.Bean.user;
 import com.smart.smartchat.mapper.friendView.checkFriend;
+import com.smart.smartchat.mapper.mess.sendMess;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -16,6 +17,8 @@ public class friendViewImpl implements friendView
 {
     @Autowired
     checkFriend checkFriend;
+    @Autowired
+    sendMess sendMess;
 
     @Override
     public List<user> checkFriend(Integer id, Integer relation)
@@ -51,6 +54,23 @@ public class friendViewImpl implements friendView
     public user search(String username)
     {
         return checkFriend.search(username);
+    }
+
+    @Override
+    public void addRelation(String nameA,String nameB, Integer relation)
+    {
+        String newMess="(已拒绝)";
+        String oldmess="请求添加您为好友！";
+        if (relation!=-1){
+            Integer id = checkFriend.selectId(nameA);
+            System.out.println(id);
+            Integer fid= checkFriend.selectId(nameB);
+            System.out.println(fid);
+            checkFriend.addRelation(id,fid,relation);
+            checkFriend.addRelation(fid,id,relation);
+            newMess="(已接受)";
+        }
+        sendMess.updateMessage(1,oldmess+newMess,nameA,nameB,0,oldmess);
     }
 
 }

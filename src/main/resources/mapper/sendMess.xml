@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.smart.smartchat.mapper.mess.sendMess">
+    <select id="selectMess" resultType="com.smart.smartchat.Bean.text">
+        select * from message where nameA=#{nameA} and nameB=#{nameB} and messType=#{messType}
+        <if test="status!=null">
+            and status=#{status}
+        </if>
+    </select>
+
+</mapper>

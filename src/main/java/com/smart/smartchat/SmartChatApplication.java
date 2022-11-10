@@ -8,10 +8,8 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 @SpringBootApplication
 public class SmartChatApplication
 {
-
     public static void main(String[] args)
     {
-       SpringApplication.run(SmartChatApplication.class, args);
+        SpringApplication.run(SmartChatApplication.class, args);
     }
-
 }

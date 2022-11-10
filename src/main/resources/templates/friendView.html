@@ -7,248 +7,7 @@
     <link rel="stylesheet" type="text/css" href="css/chunk-10c06c3d.932ad9fe.css">
     <link rel="stylesheet" type="text/css" href="css/app.b8af9203.css">
     <link rel="stylesheet" type="text/css" href="css/my.css">
-    <script>
-        window.onload = function () {
-            document.getElementById("relation01").hidden = true;
-            friendDis2();
-        }
-
-        function relation() {
-            document.getElementById("mess01").hidden = true;
-            document.getElementById("relation01").hidden = false;
-        }
-
-        function message() {
-            document.getElementById("relation01").hidden = true;
-            document.getElementById("mess01").hidden = false;
-        }
-
-        function display01(a) {
-            var content = document.getElementById(a);
-            if (content.style.display == "none") {
-                content.style.display = "block";
-            } else {
-                content.style.display = "none";
-            }
-        }
-
-        var socket;
-
-        function friendDis2() {
-            var username = document.getElementById("name01").innerText;
-            socket = new WebSocket("ws://localhost:8080/friends/" + username)
-            socket.onopen = function () {
-            }
-            socket.onmessage = function (msg) {
-                var mess = JSON.parse(msg.data);
-                if (mess.hasOwnProperty("0")) {
-                    getFriendsMess(mess);
-                } else if (mess.hasOwnProperty("mess0")) {
-                    alert(mess.mess0)
-                } else if (mess.hasOwnProperty("sys0")) {
-                    getMess(mess);
-                } else if (mess.hasOwnProperty("search")) {
-                    search02(mess);
-                } else if (mess.hasOwnProperty("aF")) {
-                    SendAddFriends(mess);
-                }
-            }
-            socket.onclose = function () {
-            }
-            socket.onerror = function () {
-                alert("网络故障！");
-            }
-        }
-
-        function getFriendsMess(friends) {
-            var cona = "<div>\n" +
-                "                                        <div class=\"icon-list-item active\">\n" +
-                "                                            <div class=\"ext\"><p class=\"attr\"></p></div>\n" +
-                "                                            <div class=\"avatar\"><img\n" +
-                "                                                    src=\"assets/general/common/images/common/head/user/2.jpg\" alt=\"\"\n" +
-                "                                                    class=\"img gray\"><i class=\"\"></i></div>\n" +
-                "                                            <div class=\"info\"><h3 class=\"nickname\"><span class=\"nickname-text\">";
-            var conb = "</h3>\n" +
-                "<p class=\"msg\"><span></span></p></div>\n" +
-                "</div>\n" +
-                "</div><hr style='height: 1px'/>"
-            for (let i = 0; i < 4; i++) {
-                var status0 = "";
-                var content = document.getElementById("content" + i);
-                content.innerHTML = "";
-                var count = document.getElementById("count" + i);
-                var onLine = 0;
-                for (let j = 0; j < friends[i].length; j++) {
-                    if (friends[i][j].status == 1) {
-                        onLine += 1;
-                        var b = cona + friends[i][j].username + "</span>在线" + conb;
-                        content.innerHTML += b;
-                    } else {
-                        var c = cona + friends[i][j].username + "</span>离线" + conb;
-                        status0 += c;
-                    }
-                }
-                count.innerText = "[" + onLine + "/" + friends[i].length + "]";
-
-                content.innerHTML += status0;
-            }
-        }
-
-        function exit() {
-            window.location.href = "/";
-        }
-
-        function add() {
-            var s = document.getElementById("first_add");
-            if (s.hidden == true) {
-                s.hidden = false;
-            } else {
-                s.hidden = true;
-            }
-        }
-
-        function exitS(od) {
-            var s = document.getElementById(od);
-            s.hidden = true;
-        }
-
-        function search01() {
-            document.getElementById("addF01").innerHTML = "";
-            document.getElementById("tip03").innerText = "";
-            document.getElementById("addB01").hidden = true;
-            var sear = document.getElementById("sear01");
-            var tip = document.getElementById("tip02");
-            if (sear.value.length < 8 || sear.value.length > 12) {
-                tip.innerText = "亲，账号长度不对欧！";
-            } else {
-                tip.innerText = "";
-                var target = {
-                    "search": sear.value
-                }
-                socket.send(JSON.stringify(target));
-            }
-        }
-
-        function search02(mess) {
-            var addB01 = document.getElementById("addB01");
-            var add = document.getElementById("addF01");
-            if (mess.search == "1") {
-                var cona = "<div>\n" +
-                    "                                        <div class=\"icon-list-item active\" style='border: #0608ff 2px solid'>\n" +
-                    "                                            <div class=\"ext\"><p class=\"attr\"></p></div>\n" +
-                    "                                            <div class=\"avatar\"><img\n" +
-                    "                                                    src=\"assets/general/common/images/common/head/user/2.jpg\" alt=\"\"\n" +
-                    "                                                    class=\"img gray\"><i class=\"\"></i></div>\n" +
-                    "                                            <div class=\"info\"><h3 class=\"nickname\"><span class=\"nickname-text\" id='goodF'>";
-                var conb = "</h3>\n" +
-                    "<p class=\"msg\"><span></span></p></div>\n" +
-                    "</div>\n";
-                var b;
-                if (mess.status == "1") {
-                    b = cona + mess.username + "</span>在线" + conb;
-                } else {
-                    b = cona + mess.username + "</span>离线" + conb;
-                }
-                add.innerHTML = b;
-                addB01.hidden = false;
-            } else {
-                add.innerHTML = "";
-                addB01.hidden = true;
-                var tip = document.getElementById("tip02");
-                tip.innerText = "亲，该账号不存在欧！";
-            }
-        }
-
-        function addFriend() {
-            var gf = document.getElementById("goodF");
-            socket.send("{\"addF\":\"" + gf.innerText + "\"}");
-        }
-
-        function SendAddFriends(mess) {
-            var tip03 = document.getElementById("tip03");
-            var a;
-            if (mess.aF == 1) {
-                a = "亲，发送成功！";
-            } else if (mess.aF == 2) {
-                a = "亲，请勿重复发送欧！";
-            } else if (mess.aF == 3) {
-                a = "亲，你们已经是好友了！";
-            } else {
-                a = "亲，发送失败！";
-            }
-            tip03.innerText = a;
-        }
-
-        //将时间戳转换成日期格式
-        function timestampToTime(timestamp) {
-            var date = new Date(timestamp);//时间戳为10位需*1000，时间戳为13位的话不需乘1000
-            var Y = date.getFullYear() + '-';
-            var M = (date.getMonth() + 1 < 10 ? '0' + (date.getMonth() + 1) : date.getMonth() + 1) + '-';
-            var D = (date.getDate() < 10 ? '0' + (date.getDate()) : date.getDate()) + ' ';
-            var h = (date.getHours() < 10 ? '0' + (date.getHours()) : date.getHours()) + ':';
-            var m = (date.getMinutes() < 10 ? '0' + (date.getMinutes()) : date.getMinutes()) + ':';
-            var s = (date.getSeconds() < 10 ? '0' + (date.getSeconds()) : date.getSeconds());
-            return Y + M + D + h + m + s;
-        }
-
-        function chat() {
-
-        }
-
-        function getMess(mess) {
-            var news = document.getElementById("news");
-            var a = "<div class=\"icon-list-item active\"";
-            var k = ">\n" +
-                "                                    <div class=\"ext\"><p class=\"attr\">";
-            var b = "</p>\n" +
-                "                                    </div>\n" +
-                "                                    <div class=\"avatar\"><img\n" +
-                "                                            src=\"images/james.jpg\"\n" +
-                "                                            alt=\"\" class=\"img gray\"><i\n" +
-                "                                            class=\"\"></i></div>\n" +
-                "                                    <div class=\"info\"><h3 class=\"nickname\"><span\n" +
-                "                                            class=\"nickname-text\">";
-            var c = "</span></h3>\n" +
-                "                                        <p class=\"msg\"><span>";
-            var d = "</span></p></div>\n" +
-                "                                    <em class=\"close-icon\"><i class=\"fas fa-times-circle\"></i></em></div>";
-            messNumber = 0;
-            for (var item in mess) {
-                var u;
-                var message;
-                var timestampToTime1 = timestampToTime(mess[item].time);
-                var view = "id=\"chatV" + messNumber + "\"";
-                message = mess[item].nameA + mess[item].message;
-                if (item.substring(0, 3) != "sys") {
-                    u = a + view + k + timestampToTime1 + b + mess[item].nameA + c + message + d;
-                } else {
-                    u = a + view + k + timestampToTime1 + b + "系统信息" + c + message + d;
-                }
-                news.innerHTML += u;
-                document.getElementById("chatV" + messNumber).ondblclick = function () {
-                    var chatPart = document.getElementById("chatPart");
-                    var a = "<div class=\"chatView\" >\n" +
-                        "        <div class=\"top1\">\n" +
-                        "            <p class=\"timeView\" >";
-                    var b = "<img src=\"images/james.jpg\"\n" +
-                        "                 alt=\"\" class=\"img1\"><i\n" +
-                        "                class=\"\"></i>\n" +
-                        "            <div class=\"nameA0\" >";
-                    var chatViews = document.getElementsByClassName("chatView");
-                    var t = document.getElementById("t" + i);
-                    var n = document.getElementById("n" + i);
-                    t.innerText = timestampToTime1;
-                    if (item.substring(0, 3) != "sys") {
-                        n.innerText = mess[item].nameA;
-                    }
-                    n.innerText = "系统信息";
-                    chatViews[i].hidden = false;
-                    return;
-                }
-                messNumber++;
-            }
-        }
-    </script>
+    <script src="js/my.js"></script>
 </head>
 <body>
 <div class="oim-main-nav-pane">
@@ -287,7 +46,7 @@
                         <button type="button" id="relation_button" class="title01" onclick="relation()">联系人</button>
                     </div>
                     <br>
-                    <div id="content" style=" overflow-y:auto; overflow-x:auto; width:279px; height:550px;">
+                    <div id="content" style=" overflow-y:auto; overflow-x:auto; width:279px; height:570px;">
                         <div id="mess01" class="only-full-pane only-scrollbar-y"
                              style="height: 100%;">
                             <div id="news">
@@ -305,11 +64,11 @@
                             </div>
                         </div>
                         <div id="relation01" class="title"
-                             style="position: absolute;left:10px; overflow-x:auto; width:400px; height:550px;">
+                             style="position: absolute;left:10px; overflow-x:auto; width:400px; height:560px;">
                             <div>
                                 <button id="dis01" onclick="display01('content0')" class="i01"></button>&nbsp;
                                 <label class="name">我的好友</label><label id="count0" class="count"></label>
-                                <div id="content0" class="content" style="display: none;width: 350px">
+                                <div id="content0" class="content" style="display: none;width: 350px;">
                                 </div>
                             </div>
                             <div>
@@ -330,8 +89,6 @@
                                 <div id="content3" class="content" style="display: none;width: 350px">
                                 </div>
                             </div>
-
-
                         </div>
                     </div>
                 </div>
@@ -367,25 +124,13 @@
                     这不是国务院联防联控机制第一次通报“层层加码”问题。6月24日召开的国务院联防联控机！
                 </div>
             </div>
-            <div class="messC"><img src="images/james.jpg"
-                                    alt="" class="img2"><i
-                    class=""></i>
-                <div class="chatMess">你好啊真的,我是杀马特！</div>
-            </div>
-            <div class="messCB">
-                <div class="chatMess2">你好啊真的,我也是杀马特！</div>
-                <img src="images/james.jpg"
-                     alt="" class="img3"><i
-                    class=""></i>
-            </div><div class="messCB">
-                <div class="chatMess2"></div>
-                <img src="images/james.jpg"
-                     alt="" class="img3"><i
-                    class=""></i>
+            <div>
+                <button type="button" class="agree">同意</button>
+                <button type="button" class="disagree">不同意</button>
             </div>
         </div>
         <div class="inputView">
-            <textarea style="width: 365px;height: 106px;font-size: 20px;border-bottom-left-radius: 15px;border: #3295ff solid 1px">0</textarea>
+                <textarea class="textA">0</textarea>
             <button type="button" class="sendB">发送</button>
         </div>
     </div>

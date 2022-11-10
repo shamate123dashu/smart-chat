@@ -54,6 +54,7 @@ public class websocket
         this.basicRemote = session.getBasicRemote();
         webSocketMap.put(username, this);
         count++;
+        //发送自身好友在线情况
         this.SendMessage(friendView.checkFriend01(this.username));
         this.SendOnline();
     }
@@ -62,12 +63,21 @@ public class websocket
     public void onMessage(String message)
     {
         Map<String, String> map = (Map) JSON.parse(message);
-        if (map.containsKey("search"))
+        if (map.containsKey("message"))
+        {
+            messageS.chat(username, map.get("nameA"), map.get("message"));
+        }else if (map.containsKey("GetChat")){
+
+        }
+        else if (map.containsKey("search"))
         {
             search(map);
         } else if (map.containsKey("addF"))
         {
             addFriend(map.get("addF"));
+        } else if (map.containsKey("relation"))
+        {
+            addRelation(map);
         }
     }
 
@@ -101,6 +111,7 @@ public class websocket
     //登录或者下线后，将状态发给好友。
     public void SendOnline()
     {
+        //查找在线的好友
         List<String> names = friendView.checkFri(username);
         for (String name :
                 names)
@@ -116,27 +127,26 @@ public class websocket
         if (target != null)
         {
             s = "{\"search\":\"1\",\"status\":\"" + target.getStatus() + "\",\"username\":\"" + target.getUsername() + "\"}";
-            System.out.println(s);
         } else
         {
             s = "{\"search\":\"0\"}";
         }
         SendMessage(s);
-        System.out.println("fff");
-        System.out.println(s);
     }
 
     private void addFriend(String nameB)
     {
         Integer Number = messageS.addFriends(username, nameB);
         SendMessage("{\"aF\":" + Number + "}");
-        if (Number==1){
-            SendFriend(nameB, messageS.selectMess(username,nameB,0,0));
+        if (Number == 1)
+        {
+            SendFriend(nameB, messageS.selectMess(username, nameB, 0, 0));
         }
     }
 
     /**
      * 将信息发送给在线的目标对象
+     *
      * @param targetName
      * @param message
      */
@@ -146,6 +156,23 @@ public class websocket
         if (websocket != null)
         {
             websocket.SendMessage(message);
+        }
+    }
+
+    /**
+     * 根据是否同意添加好友，来添加好友关系。
+     *
+     * @param map
+     */
+    private void addRelation(Map<String,String> map)
+    {
+        Integer relation = Integer.parseInt(map.get("relation"));
+        System.out.println(map.get("nameA"));
+        friendView.addRelation(map.get("nameA"),username, relation);
+        if (relation!=-1){
+            System.out.println(relation);
+            SendFriend(map.get("nameA"), friendView.checkFriend01(map.get("nameA")));
+            this.SendMessage(friendView.checkFriend01(this.username));
         }
     }
 }

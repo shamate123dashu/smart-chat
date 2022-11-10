@@ -1,6 +1,7 @@
 package com.smart.smartchat.mapper.friendView;
 
 import com.smart.smartchat.Bean.user;
+import org.apache.ibatis.annotations.Insert;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Select;
 
@@ -19,4 +20,7 @@ public interface checkFriend
     public Integer exit(String username);
     @Select("SELECT username,status from userinfo where username=#{username}")
     public user search(String username);
+    @Insert("insert into friendinfo values(#{id},#{fid},#{relation})")
+    public Integer addRelation(Integer id,Integer fid,Integer relation);
+
 }

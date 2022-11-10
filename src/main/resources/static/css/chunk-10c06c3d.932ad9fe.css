@@ -572,7 +572,7 @@ body, html {
 .oim-main-nav-pane {
     position: relative;
     width: 280px;
-    height: 100%;
+    height: 758px;
     float: left;
     background: #ececec;
     border-right: 1px solid #d9d9d9;
@@ -796,7 +796,7 @@ body, html {
 }
 
 .oim-content-pane .title .title_name .emoji {
-    margin-top: 5px
+    /*margin-top: 5px*/
 }
 
 .oim-content-pane .title.poi {
@@ -1023,10 +1023,20 @@ body, html {
 }
 
 .icon-list-item.active {
-    background: rgb(255,255,255);
+    background: #d8eeff;
     border: 1px solid #5cd3ff;
-    width: 279px;
+    width: 265px;
     height: 78.5px;
+    border-radius: 15px;
+    left: 8px;
+}
+
+.icon-list-item.active1 {
+    background: #d8eeff;
+    border: 1px solid #5cd3ff;
+    width: 265px;
+    height: 78.5px;
+    border-radius: 15px;
 }
 
 .icon-list-item.active .ext, .icon-list-item.active .info .msg {
@@ -1067,7 +1077,8 @@ body, html {
     font-weight: 400;
     font-size: 13px;
     color: #0a0a0a;
-    line-height: 20px
+    line-height: 20px;
+    width: 180px;
 }
 
 .icon-list-item .info .nickname-text {
@@ -1087,6 +1098,8 @@ body, html {
 }
 
 .icon-list-item .info .msg {
+    position: relative;
+    top: 3px;
     color: #989898;
     font-size: 13px;
     width: 100%;
@@ -1833,7 +1846,9 @@ button[data-v-222897db] {
 .oim-search-bar {
     position: relative;
     width: 244px;
-    margin: 0 auto 6px
+    margin: 0 auto 6px;
+    top: -8px;
+    left: 9px;
 }
 
 .oim-search-icon {

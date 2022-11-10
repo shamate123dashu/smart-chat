@@ -13,4 +13,5 @@ public interface friendView
     public List<String> checkFri(String username);
     public Integer exit(String username);
     public user search(String username);
+    public void addRelation(String nameA,String nameB,Integer relation);
 }
