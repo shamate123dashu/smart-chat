@@ -34,7 +34,7 @@ function friendDis2() {
         if (mess.hasOwnProperty("0")) {
             getFriendsMess(mess);
         } else if (mess.hasOwnProperty("mess0")) {
-            alert(mess.mess0)
+            getChat(mess)
         } else if (mess.hasOwnProperty("sys0")) {
             getMess(mess);
         } else if (mess.hasOwnProperty("search")) {
@@ -51,7 +51,7 @@ function friendDis2() {
 }
 
 function getFriendsMess(friends) {
-    var cona ="\")'>\n" +
+    var cona = "\")'>\n" +
         "                                        <div class=\"icon-list-item active1\">\n" +
         "                                            <div class=\"avatar\"><img\n" +
         "                                                    src=\"images/james.jpg\" alt=\"\"\n" +
@@ -70,10 +70,10 @@ function getFriendsMess(friends) {
         for (var j = 0; j < friends[i].length; j++) {
             if (friends[i][j].status == 1) {
                 onLine += 1;
-                var b = "<div ondblclick='relationChat(\""+ friends[i][j].username+cona + friends[i][j].username + "</span>在线" + conb;
+                var b = "<div ondblclick='relationChat(\"" + friends[i][j].username + cona + friends[i][j].username + "</span>在线" + conb;
                 content.innerHTML += b;
             } else {
-                var c =  "<div ondblclick='relationChat(\""+ friends[i][j].username+cona + friends[i][j].username + "</span>离线" + conb;
+                var c = "<div ondblclick='relationChat(\"" + friends[i][j].username + cona + friends[i][j].username + "</span>离线" + conb;
                 outLine += c;
             }
         }
@@ -82,11 +82,53 @@ function getFriendsMess(friends) {
         content.innerHTML += outLine;
     }
 }
-function relationChat(nameB){
-    var mess={
-        "GetChat":nameB
+
+function relationChat(nameB) {
+    var mess = {
+        "GetChat": nameB
     }
     socket.send(JSON.stringify(mess));
+    var chatS = document.getElementById("chatView" + chatView);
+    if (chatS == null) {
+        var chatPart = document.getElementById("chatPart");
+        var a = "<div class=\"chatView\" id='chatView" + chatView + "'>\n" +
+            "        <div class=\"top1\">\n" +
+            "            <p class=\"timeView\" >";
+        var b = "</p><img src=\"images/james.jpg\"\n" +
+            "                 alt=\"\" class=\"img1\"><i\n" +
+            "                class=\"\"></i>\n" +
+            "            <div class=\"nameA0\" >";
+        var c = "</div>\n" +
+            "            <button class=\"off01\" onclick=\"exitS('chatView" + chatView + "')\"></button>\n" +
+            "        </div>\n" +
+            "        <div class=\"chatContent\">\n";
+        var d = "<div class=\"messC\"><img src=\"images/james.jpg\"\n" +
+            "                                    alt=\"\" class=\"img2\"><i\n" +
+            "                    class=\"\"></i>\n" +
+            "                <div class=\"chatMess\">";
+        var e=" </div>\n" +
+            "        <div class=\"inputView\">\n" +
+            "            <textarea class=\"textA\">0</textarea>\n" +
+            "            <button type=\"button\" class=\"sendB\">发送</button>\n" +
+            "        </div>\n" +
+            "    </div>";
+        var chat;
+        var message="";
+        for (var item in mess) {
+            message+=d+mess[item].message+"</div></div>";
+        }
+        var timestampToTime1 = timestampToTime(mess[item].time);
+        chat = a + timestampToTime1 + b + mess[item].nameB +c + message + e;
+        chatPart.innerHTML += chat;
+    } else {
+        if (chatS.hidden == true) {
+            chatS.hidden = false;
+        } else {
+            chatS.hidden = true;
+        }
+        return;
+    }
+    chatView += 1;
 }
 
 function exit() {
@@ -190,54 +232,70 @@ function sendMess(a) {
     alert("1111");
 
 }
+
 //是否同意，
 function ViewChat(item, timestampToTime1, mess) {
-    document.getElementById("chatV" + messNumber).ondblclick = function () {
-        var chatPart = document.getElementById("chatPart");
-        var a = "<div class=\"chatView\" >\n" +
-            "        <div class=\"top1\">\n" +
-            "            <p class=\"timeView\" >";
-        var b = "</p><img src=\"images/james.jpg\"\n" +
-            "                 alt=\"\" class=\"img1\"><i\n" +
-            "                class=\"\"></i>\n" +
-            "            <div class=\"nameA0\" >" + "系统信息";
-        var c = "</div>\n" +
-            "            <button class=\"off01\" onclick=\"exitS('viewChat0')\"></button>\n" +
-            "        </div>\n" +
-            "        <div class=\"chatContent\">\n" +
-            "            <div class=\"messC\"><img src=\"images/james.jpg\"\n" +
-            "                                    alt=\"\" class=\"img2\"><i\n" +
-            "                    class=\"\"></i>\n" +
-            "                <div class=\"chatMess\">";
-        var chat;
-        chat = a + timestampToTime1 + b + c + mess[item].nameA + mess[item].message+"</div>\n" +
-            "            </div>\n";
-        if (mess[item].message=="请求添加您为好友！"&&mess[item].status==0) {
-            chat+="<div id='commit"+messNumber+"'>\n" +
-                "                <button type=\"button\" class=\"agree\" id='agree"+messNumber+"'>同意</button>\n" +
-                "                <button type=\"button\" class=\"disagree\" id='disagree"+messNumber+"'>不同意</button>\n" +
-                "            </div>\n" +
-                "        </div></div>";
-            chatPart.innerHTML += chat;
-            document.getElementById("agree"+messNumber).onclick=function (){
-                var relation={
-                    "nameA":mess[item].nameA,
-                    "relation": "0"
+    var name01 = document.getElementById("name01");
+    if(name01==mess[item].nameA){
+        name01=mess[item].nameB;
+    }else {
+        name01=mess[item].nameA;
+    }
+    document.getElementById("chatV" + name01).ondblclick = function () {
+        var chatS = document.getElementById("chatView" + name01);
+        if (chatS == null) {
+            var chatPart = document.getElementById("chatPart");
+            var a = "<div class=\"chatView\" id='chatView" + chatView + "'>\n" +
+                "        <div class=\"top1\">\n" +
+                "            <p class=\"timeView\" >";
+            var b = "</p><img src=\"images/james.jpg\"\n" +
+                "                 alt=\"\" class=\"img1\"><i\n" +
+                "                class=\"\"></i>\n" +
+                "            <div class=\"nameA0\" >" + "系统信息";
+            var c = "</div>\n" +
+                "            <button class=\"off01\" onclick=\"exitS('chatView" + chatView + "')\"></button>\n" +
+                "        </div>\n" +
+                "        <div class=\"chatContent\">\n" +
+                "            <div class=\"messC\"><img src=\"images/james.jpg\"\n" +
+                "                                    alt=\"\" class=\"img2\"><i\n" +
+                "                    class=\"\"></i>\n" +
+                "                <div class=\"chatMess\">";
+            var chat;
+            chat = a + timestampToTime1 + b + c + mess[item].nameA + mess[item].message + "</div>\n" +
+                "            </div>\n";
+            if (mess[item].message == "请求添加您为好友！" && mess[item].status == 0) {
+                chat += "<div id='commit" + messNumber + "'>\n" +
+                    "                <button type=\"button\" class=\"agree\" id='agree" + messNumber + "'>同意</button>\n" +
+                    "                <button type=\"button\" class=\"disagree\" id='disagree" + messNumber + "'>不同意</button>\n" +
+                    "            </div>\n" +
+                    "        </div></div>";
+                chatPart.innerHTML += chat;
+                document.getElementById("agree" + messNumber).onclick = function () {
+                    var relation = {
+                        "nameA": mess[item].nameA,
+                        "relation": "0"
+                    }
+                    socket.send(JSON.stringify(relation));
+                    document.getElementById("commit" + messNumber).innerHTML = "<div style='color: cornflowerblue;position: relative;left: 180px;font-size: 20px;width:100px'>已同意</div>";
                 }
-                socket.send(JSON.stringify(relation));
-                document.getElementById("commit"+messNumber).innerHTML="<div style='color: cornflowerblue;position: relative;left: 180px;font-size: 20px;width:100px'>已同意</div>";
-            }
-            document.getElementById("disagree"+messNumber).onclick=function (){
-                var relation={
-                    "nameA": mess[item].nameA,
-                    "relation": "-1"
+                document.getElementById("disagree" + messNumber).onclick = function () {
+                    var relation = {
+                        "nameA": mess[item].nameA,
+                        "relation": "-1"
+                    }
+                    socket.send(JSON.stringify(relation));
+                    document.getElementById("commit" + messNumber).innerHTML = "<div  style='color: cornflowerblue;position: relative;left: 180px;font-size: 20px'>已拒绝</div>";
                 }
-                socket.send(JSON.stringify(relation));
-                document.getElementById("commit"+messNumber).innerHTML="<div  style='color: cornflowerblue;position: relative;left: 180px;font-size: 20px'>已拒绝</div>";
+            } else {
+                chatPart.innerHTML += chat;
             }
-        }
-        else {
-            chatPart.innerHTML += chat;
+        } else {
+            if (chatS.hidden == true) {
+                chatS.hidden = false;
+            } else {
+                chatS.hidden = true;
+            }
+            return;
         }
     }
 }
@@ -271,6 +329,57 @@ function getMess(mess) {
         news.innerHTML += u;
         ViewChat(item, timestampToTime1, mess);
         messNumber++;
+    }
+}
+
+function getChat(mess) {
+    var name01 = document.getElementById("name01").innerText;
+    alert(name01);
+    if(name01==mess["mess0"].nameA){
+        name01=mess["mess0"].nameB;
+    }else {
+        name01=mess["mess0"].nameA;
+    }
+    alert(name01);
+    var chatS = document.getElementById("chatView" + name01);
+    if (chatS == null) {
+        var chatPart = document.getElementById("chatPart");
+        var a = "<div class=\"chatView\" id='chatView" + name01 + "'>\n" +
+            "        <div class=\"top1\">\n" +
+            "            <p class=\"timeView\" >";
+        var b = "</p><img src=\"images/james.jpg\"\n" +
+            "                 alt=\"\" class=\"img1\"><i\n" +
+            "                class=\"\"></i>\n" +
+            "            <div class=\"nameA0\" >";
+        var c = "</div>\n" +
+            "            <button class=\"off01\" onclick=\"exitS('chatView" +name01 + "')\"></button>\n" +
+            "        </div>\n" +
+            "        <div class=\"chatContent\">\n";
+        var d = "<div class=\"messC\"><img src=\"images/james.jpg\"\n" +
+            "                                    alt=\"\" class=\"img2\"><i\n" +
+            "                    class=\"\"></i>\n" +
+            "                <div class=\"chatMess\">";
+        var e=" </div>\n" +
+            "        <div class=\"inputView\">\n" +
+            "            <textarea class=\"textA\">0</textarea>\n" +
+            "            <button type=\"button\" class=\"sendB\">发送</button>\n" +
+            "        </div>\n" +
+            "    </div>";
+        var chat;
+        var message="";
+        for (var item in mess) {
+            message+=d+mess[item].message+"</div></div>";
+        }
+        var timestampToTime1 = timestampToTime(mess[item].time);
+        chat = a + timestampToTime1 + b + mess[item].nameB +c + message + e;
+        chatPart.innerHTML += chat;
+    } else {
+        if (chatS.hidden == true) {
+            chatS.hidden = false;
+        } else {
+            chatS.hidden = true;
+        }
+        return;
     }
 }
 

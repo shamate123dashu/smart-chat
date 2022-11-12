@@ -1,6 +1,7 @@
 package com.smart.smartchat.Controller.friendView;
 
 import com.alibaba.fastjson2.JSON;
+import com.smart.smartchat.Bean.text;
 import com.smart.smartchat.Bean.user;
 import com.smart.smartchat.Service.friendView.friendView;
 
@@ -67,7 +68,7 @@ public class websocket
         {
             messageS.chat(username, map.get("nameA"), map.get("message"));
         }else if (map.containsKey("GetChat")){
-
+            getChat(map.get("GetChat"));
         }
         else if (map.containsKey("search"))
         {
@@ -79,6 +80,11 @@ public class websocket
         {
             addRelation(map);
         }
+    }
+
+    private void getChat(String nameB)
+    {
+        SendMessage(messageS.getChat(username, nameB));
     }
 
 
@@ -98,7 +104,6 @@ public class websocket
 
     public void SendMessage(String mess)
     {
-        System.out.println(mess);
         try
         {
             this.basicRemote.sendText(mess);

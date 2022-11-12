@@ -55,12 +55,7 @@ public class messageImpl implements message
         Map<String, text> messMap = new HashMap<>();
         for (int i = 0; i < information.size(); i++)
         {
-            if(information.get(i).getMessType()==1){
-                messMap.put("mess"+String.valueOf(i),information.get(i));
-            }
-            else {
                 messMap.put("sys"+String.valueOf(i),information.get(i));
-            }
         }
         String s = JSON.toJSONString(messMap);
         System.out.println(s);
@@ -96,7 +91,16 @@ public class messageImpl implements message
         System.out.println(s);
         return s;
     }
-
-
-
+    public String getChat(String nameA,String nameB){
+        List<text> texts0 = sendMess.selectMess( nameB,nameA, null, 1);
+        List<text> texts1 = sendMess.selectMess(nameA, nameB, null, 1);
+        texts0.addAll(texts1);
+        Map<String, text> messMap = new HashMap<>();
+        for (int i = 0; i < texts0.size(); i++)
+        {
+            messMap.put("mess"+String.valueOf(i),texts0.get(i));
+        }
+        System.out.println(JSON.toJSONString(messMap));
+        return JSON.toJSONString(messMap);
+    }
 }

@@ -111,7 +111,9 @@ class SmartChatApplicationTests
     @Test
     void aad(){
 //        System.out.println(friendView.search("aaasss12"));
-        System.out.println(sendMess.selectMess("admin", "aaasss12", null, 0));
+//        System.out.println(sendMess.selectMess(, null, 0));
+        List<text> texts0 = sendMess.selectMess( "admin", "aaasss12", null, 1);
+        System.out.println(texts0);
     }
 
 }

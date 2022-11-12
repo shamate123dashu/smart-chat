@@ -1,5 +1,6 @@
 package com.smart.smartchat.Service.mess;
 
+
 public interface message
 {
     public Integer addFriends(String nameA, String nameB);
@@ -9,4 +10,5 @@ public interface message
     public boolean IsRepeat(String nameA, String nameB, String message, Integer status, Integer messType);
 
     public String chat(String nameA, String nameB, String message);
+    public String getChat(String nameA, String nameB);
 }
