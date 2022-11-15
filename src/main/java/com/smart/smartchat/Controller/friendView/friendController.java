@@ -2,6 +2,7 @@ package com.smart.smartchat.Controller.friendView;
 
 import com.smart.smartchat.Bean.user;
 import com.smart.smartchat.Service.friendView.friendView;
+import com.smart.smartchat.config.WebSocketConfig;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -31,7 +32,6 @@ public class friendController
     {
         Integer id = (Integer)session.getAttribute("userId");
         List<user> userList =friendView.checkFriend(id,relation);
-        System.out.println("6666666");
         return userList;
     }
 }

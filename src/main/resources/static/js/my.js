@@ -25,18 +25,19 @@ function display01(a) {
 var socket;
 
 function friendDis2() {
-    var username = document.getElementById("name01").innerText;
-    socket = new WebSocket("ws://localhost:8080/friends/" + username)
+    socket = new WebSocket("ws://localhost:8080/friends")
     socket.onopen = function () {
     }
     socket.onmessage = function (msg) {
         var mess = JSON.parse(msg.data);
         if (mess.hasOwnProperty("0")) {
             getFriendsMess(mess);
-        } else if (mess.hasOwnProperty("mess0")) {
+        } else if (mess.hasOwnProperty("mess")) {
+            getMess(mess)
+        } else if (mess.hasOwnProperty("chat0")) {
             getChat(mess)
         } else if (mess.hasOwnProperty("sys0")) {
-            getMess(mess);
+            getSys(mess);
         } else if (mess.hasOwnProperty("search")) {
             search02(mess);
         } else if (mess.hasOwnProperty("aF")) {
@@ -61,7 +62,7 @@ function getFriendsMess(friends) {
         "<p class=\"msg\"><span></span></p></div>\n" +
         "</div>\n" +
         "</div>"
-    for (let i = 0; i < 4; i++) {
+    for (var i = 0; i < 4; i++) {
         var outLine = "";
         var content = document.getElementById("content" + i);
         content.innerHTML = "";
@@ -84,51 +85,75 @@ function getFriendsMess(friends) {
 }
 
 function relationChat(nameB) {
-    var mess = {
-        "GetChat": nameB
-    }
-    socket.send(JSON.stringify(mess));
-    var chatS = document.getElementById("chatView" + chatView);
+    var chatS = document.getElementById("chatView" + nameB);
     if (chatS == null) {
+        //第一次查询要获得全部聊天内容
         var chatPart = document.getElementById("chatPart");
-        var a = "<div class=\"chatView\" id='chatView" + chatView + "'>\n" +
+        var a = "<div class=\"chatView\" id='chatView" + nameB + "'>\n" +
             "        <div class=\"top1\">\n" +
-            "            <p class=\"timeView\" >";
+            "            <p class=\"timeView\" id='time" + nameB + "'>";
         var b = "</p><img src=\"images/james.jpg\"\n" +
             "                 alt=\"\" class=\"img1\"><i\n" +
             "                class=\"\"></i>\n" +
             "            <div class=\"nameA0\" >";
         var c = "</div>\n" +
-            "            <button class=\"off01\" onclick=\"exitS('chatView" + chatView + "')\"></button>\n" +
+            "            <button class=\"off01\" onclick=\"exitS('chatView" + nameB + "')\"></button>\n" +
             "        </div>\n" +
-            "        <div class=\"chatContent\">\n";
+            "        <div class=\"chatContent\" id='content" + nameB + "'>\n";
         var d = "<div class=\"messC\"><img src=\"images/james.jpg\"\n" +
             "                                    alt=\"\" class=\"img2\"><i\n" +
             "                    class=\"\"></i>\n" +
             "                <div class=\"chatMess\">";
-        var e=" </div>\n" +
+        var e = " </div>\n" +
             "        <div class=\"inputView\">\n" +
-            "            <textarea class=\"textA\">0</textarea>\n" +
-            "            <button type=\"button\" class=\"sendB\">发送</button>\n" +
+            "            <textarea class=\"textA\" id='text" + nameB + "'></textarea>\n" +
+            "            <button type=\"button\" class=\"sendB\" onclick='sendMess(\"" + nameB + "\")'>发送</button>\n" +
             "        </div>\n" +
             "    </div>";
         var chat;
-        var message="";
-        for (var item in mess) {
-            message+=d+mess[item].message+"</div></div>";
-        }
-        var timestampToTime1 = timestampToTime(mess[item].time);
-        chat = a + timestampToTime1 + b + mess[item].nameB +c + message + e;
+        chat = a + b + nameB + c + e;
         chatPart.innerHTML += chat;
+        var mess = {
+            "GetChat": nameB
+        }
+        socket.send(JSON.stringify(mess));
     } else {
         if (chatS.hidden == true) {
             chatS.hidden = false;
-        } else {
-            chatS.hidden = true;
         }
-        return;
     }
-    chatView += 1;
+}
+//处理第一次获取历史全部聊天
+function getChat(mess) {
+    var a = "<div class=\"messC\"><img src=\"images/james.jpg\"\n" +
+        "                                alt=\"\" class=\"img2\"><i\n" +
+        "        class=\"\"></i>\n" +
+        "        <div class=\"chatMess\">";
+    var b = "</div>\n" +
+        "    </div>";
+    var c = "<div class=\"messCB\">\n" +
+        "        <div class=\"chatMess2\">";
+    var d = "</div>\n" +
+        "        <img src=\"images/james.jpg\"\n" +
+        "             alt=\"\" class=\"img3\"><i\n" +
+        "            class=\"\"></i>\n" +
+        "    </div>";
+    var nameA = document.getElementById("name01").innerText;
+    if (nameA == mess["chat0"].nameA) {
+        nameA = mess["chat0"].nameB;
+    } else {
+        nameA = mess["chat0"].nameA;
+    }
+    var chatContent = document.getElementById("content" + nameA);
+    for (var item in mess) {
+        if (mess[item].nameA == nameA) {
+            chatContent.innerHTML += a + mess[item].message + b;
+        } else {
+            chatContent.innerHTML += c + mess[item].message + d;
+        }
+    }
+    var time = document.getElementById("time" + nameA);
+    time.innerText = timestampToTime(mess[item].time);
 }
 
 function exit() {
@@ -229,17 +254,31 @@ function timestampToTime(timestamp) {
 }
 
 function sendMess(a) {
-    alert("1111");
-
+    var message = document.getElementById("text" + a);
+    var mess = {
+        "mess": message.value,
+        "nameA": a
+    }
+    var c = "<div class=\"messCB\">\n" +
+        "        <div class=\"chatMess2\">";
+    var d = "</div>\n" +
+        "        <img src=\"images/james.jpg\"\n" +
+        "             alt=\"\" class=\"img3\"><i\n" +
+        "            class=\"\"></i>\n" +
+        "    </div>";
+    var content=document.getElementById("content"+a);
+    content.innerHTML+=c+message.value+d;
+    message.value="";
+    socket.send(JSON.stringify(mess));
 }
 
-//是否同意，
+//是否同意， *bug
 function ViewChat(item, timestampToTime1, mess) {
     var name01 = document.getElementById("name01");
-    if(name01==mess[item].nameA){
-        name01=mess[item].nameB;
-    }else {
-        name01=mess[item].nameA;
+    if (name01 == mess[item].nameA) {
+        name01 = mess[item].nameB;
+    } else {
+        name01 = mess[item].nameA;
     }
     document.getElementById("chatV" + name01).ondblclick = function () {
         var chatS = document.getElementById("chatView" + name01);
@@ -299,9 +338,8 @@ function ViewChat(item, timestampToTime1, mess) {
         }
     }
 }
-
-
-function getMess(mess) {
+//refactor
+function getSys(mess) {
     var news = document.getElementById("news");
     var a = "<div class=\"icon-list-item active\"";
     var k = ">\n" +
@@ -323,7 +361,7 @@ function getMess(mess) {
         var u;
         var message;
         var timestampToTime1 = timestampToTime(mess[item].time);
-        var view = "id=\"chatV" + messNumber + "\"";
+        var view = "id=\"chatQ" + messNumber + "\"";
         message = mess[item].nameA + mess[item].message;
         u = a + view + k + timestampToTime1 + b + c + message + d;
         news.innerHTML += u;
@@ -332,66 +370,45 @@ function getMess(mess) {
     }
 }
 
-function getChat(mess) {
-    var name01 = document.getElementById("name01").innerText;
-    alert(name01);
-    if(name01==mess["mess0"].nameA){
-        name01=mess["mess0"].nameB;
-    }else {
-        name01=mess["mess0"].nameA;
-    }
-    alert(name01);
-    var chatS = document.getElementById("chatView" + name01);
-    if (chatS == null) {
-        var chatPart = document.getElementById("chatPart");
-        var a = "<div class=\"chatView\" id='chatView" + name01 + "'>\n" +
-            "        <div class=\"top1\">\n" +
-            "            <p class=\"timeView\" >";
-        var b = "</p><img src=\"images/james.jpg\"\n" +
-            "                 alt=\"\" class=\"img1\"><i\n" +
-            "                class=\"\"></i>\n" +
-            "            <div class=\"nameA0\" >";
-        var c = "</div>\n" +
-            "            <button class=\"off01\" onclick=\"exitS('chatView" +name01 + "')\"></button>\n" +
-            "        </div>\n" +
-            "        <div class=\"chatContent\">\n";
-        var d = "<div class=\"messC\"><img src=\"images/james.jpg\"\n" +
-            "                                    alt=\"\" class=\"img2\"><i\n" +
-            "                    class=\"\"></i>\n" +
-            "                <div class=\"chatMess\">";
-        var e=" </div>\n" +
-            "        <div class=\"inputView\">\n" +
-            "            <textarea class=\"textA\">0</textarea>\n" +
-            "            <button type=\"button\" class=\"sendB\">发送</button>\n" +
-            "        </div>\n" +
-            "    </div>";
-        var chat;
-        var message="";
-        for (var item in mess) {
-            message+=d+mess[item].message+"</div></div>";
-        }
-        var timestampToTime1 = timestampToTime(mess[item].time);
-        chat = a + timestampToTime1 + b + mess[item].nameB +c + message + e;
-        chatPart.innerHTML += chat;
+function getMess(mess) {
+    //如果有新消息，添加到消息界面。
+    var nameA = mess["mess"].nameA;
+    var chatQ = document.getElementById("chatQ" + nameA);
+    var chatS = document.getElementById("chatView" + nameA);
+    if (chatQ == null) {
+        var news = document.getElementById("news");
+        var a = "<div class=\"icon-list-item active\" id='chatQ" + nameA + "' ondblclick='relationChat(\"" + nameA + "\")'>\n";
+        var k = "                                    <div class=\"ext\"><p class=\"attr\" id='net" + nameA + "'>";
+        var b = "</p>\n" +
+            "                                    </div>\n" +
+            "                                    <div class=\"avatar\"><img\n" +
+            "                                            src=\"images/james.jpg\"\n" +
+            "                                            alt=\"\" class=\"img gray\"><i\n" +
+            "                                            class=\"\"></i></div>\n" +
+            "                                    <div class=\"info\"><h3 class=\"nickname\"><span\n" +
+            "                                            class=\"nickname-text\">";
+        var c = "</span></h3>\n" +
+            "                                        <p class=\"msg\"><span id='new" + nameA + "'>";
+        var d = "</span></p></div>\n" +
+            "                                    <em class=\"close-icon\"><i class=\"fas fa-times-circle\"></i></em></div>";
+        var u;
+        var timestampToTime1 = timestampToTime(mess["mess"].time);
+        u = a + k + timestampToTime1 + b + nameA + c + mess["mess"].message + d;
+        news.innerHTML += u;
     } else {
-        if (chatS.hidden == true) {
-            chatS.hidden = false;
-        } else {
-            chatS.hidden = true;
-        }
-        return;
+        //新消息刷新时间和信息
+        document.getElementById("new" + nameA).innerText = mess["mess"].message;
+        document.getElementById("net" + nameA).innerText = timestampToTime(mess["mess"].time);
+    }
+    if (chatS != null) {
+        var a = "<div class=\"messC\"><img src=\"images/james.jpg\"\n" +
+            "                                alt=\"\" class=\"img2\"><i\n" +
+            "        class=\"\"></i>\n" +
+            "        <div class=\"chatMess\">";
+        var b = "</div>\n" +
+            "    </div>";
+        var chatContent = document.getElementById("content" + nameA);
+        chatContent.innerHTML += a + mess["mess"].message + b;
+        document.getElementById("time"+nameA).innerText=mess["mess"].time.substring(0,19);
     }
 }
-
-//
-// u = a + view + k + timestampToTime1 + b + mess[item].nameA + c + message + d;
-// var d = "</div>\n" +
-//     "                </div>\n" +
-//     "            </div>\n" +
-//     "            <div class=\"inputView\">\n" +
-//     "                <textarea id='area" + messNumber + "'\n" +
-//     "                        style=\"width: 365px;height: 106px;font-size: 20px;border-bottom-left-radius: 15px;border: #3295ff solid 1px\">0</textarea>\n" +
-//     "                <button  id='sendB" + messNumber + "' type=\"button\" class=\"sendB\">发送</button>\n" +
-//     "            </div>\n" +
-//     "        </div>";
-// chat = a + timestampToTime1 + b + mess[item].nameA + c + mess[item].nameA + mess[item].message + d;

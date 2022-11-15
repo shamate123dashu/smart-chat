@@ -8,7 +8,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 
+import java.sql.Timestamp;
 import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -85,20 +87,20 @@ public class messageImpl implements message
         text.setNameB(nameB);
         text.setMessType(1);
         text.setStatus(0);
+        text.setTime( new Timestamp(System.currentTimeMillis()));
         Map<String,text> map=new HashMap<>();
-        map.put("mess0",text);
+        map.put("mess",text);
         String s = JSON.toJSONString(map);
         System.out.println(s);
         return s;
     }
     public String getChat(String nameA,String nameB){
-        List<text> texts0 = sendMess.selectMess( nameB,nameA, null, 1);
-        List<text> texts1 = sendMess.selectMess(nameA, nameB, null, 1);
-        texts0.addAll(texts1);
-        Map<String, text> messMap = new HashMap<>();
+        List<text> texts0 = sendMess.selectAllMess( nameB,nameA, 1);
+        Map<String, text> messMap = new LinkedHashMap<>(
+        );
         for (int i = 0; i < texts0.size(); i++)
         {
-            messMap.put("mess"+String.valueOf(i),texts0.get(i));
+            messMap.put("chat"+String.valueOf(i),texts0.get(i));
         }
         System.out.println(JSON.toJSONString(messMap));
         return JSON.toJSONString(messMap);

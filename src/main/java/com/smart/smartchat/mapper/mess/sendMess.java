@@ -20,4 +20,6 @@ public interface sendMess
     public Integer messNumber(Integer id,Integer fid);
     @Update("update message set status=#{status},message=#{message} where nameA=#{nameA} and nameB=#{nameB} and messType=#{messType} and message=#{oldmess}")
     public Integer updateMessage(Integer status,String message,String nameA,String nameB,Integer messType,String oldmess);
+    @Select("SELECT * FROM message where (nameA=#{nameA} and nameB=#{nameB} and messType=#{messType}) or (nameA=#{nameB} and nameB=#{nameA} and messType=#{messType}) ORDER BY time ")
+    public List<text> selectAllMess(String nameA,String nameB,Integer messType);
 }

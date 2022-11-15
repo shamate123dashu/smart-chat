@@ -15,6 +15,7 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import java.sql.Timestamp;
 import java.util.List;
 
 
@@ -105,8 +106,9 @@ class SmartChatApplicationTests
     }
     @Test
     void testTIME(){
-        List<text> texts = sendMess.selectMess("admin", "aaasss12", 0, 0);
-        System.out.println(texts.get(0).getTime());
+//        List<text> texts = sendMess.selectMess("admin", "aaasss12", 0, 0);
+//        System.out.println(texts.get(0).getTime());
+        System.out.println(new Timestamp(System.currentTimeMillis()));
     }
     @Test
     void aad(){

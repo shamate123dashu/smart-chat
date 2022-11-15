@@ -1,18 +1,19 @@
 package com.smart.smartchat.Controller.friendView;
 
 import com.alibaba.fastjson2.JSON;
-import com.smart.smartchat.Bean.text;
 import com.smart.smartchat.Bean.user;
 import com.smart.smartchat.Service.friendView.friendView;
 
 
 import com.smart.smartchat.Service.mess.message;
+import com.smart.smartchat.config.WebSocketConfig;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import org.springframework.stereotype.Component;
 
+import javax.servlet.http.HttpSession;
 import javax.websocket.*;
-import javax.websocket.server.PathParam;
+
 import javax.websocket.server.ServerEndpoint;
 
 import java.io.IOException;
@@ -20,8 +21,8 @@ import java.io.IOException;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
-
-@ServerEndpoint("/friends/{username}")
+//configurator= WebSocketConfig.class告诉websocket哪个是它的配置类。然后他才将配置类中的
+@ServerEndpoint(value = "/friends",configurator= WebSocketConfig.class)
 @Component
 public class websocket
 {
@@ -47,11 +48,11 @@ public class websocket
 
 
     @OnOpen
-    public void onOpen(Session session, @PathParam("username") String username)
+    public void onOpen(Session session,EndpointConfig config)
     {
         this.session = session;
-        this.username = username;
-        System.out.println(username);
+        HttpSession httpSession= (HttpSession) config.getUserProperties().get(HttpSession.class.getName());
+        this.username =(String)httpSession.getAttribute("username");
         this.basicRemote = session.getBasicRemote();
         webSocketMap.put(username, this);
         count++;
@@ -64,9 +65,9 @@ public class websocket
     public void onMessage(String message)
     {
         Map<String, String> map = (Map) JSON.parse(message);
-        if (map.containsKey("message"))
+        if (map.containsKey("mess"))
         {
-            messageS.chat(username, map.get("nameA"), map.get("message"));
+            newMess(map);
         }else if (map.containsKey("GetChat")){
             getChat(map.get("GetChat"));
         }
@@ -80,6 +81,12 @@ public class websocket
         {
             addRelation(map);
         }
+    }
+
+    private void newMess(Map<String, String> map)
+    {
+        String chat = messageS.chat(username, map.get("nameA"), map.get("mess"));
+        SendFriend( map.get("nameA"),chat);
     }
 
     private void getChat(String nameB)
