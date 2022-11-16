@@ -74,7 +74,8 @@ public class websocket
         else if (map.containsKey("search"))
         {
             search(map);
-        } else if (map.containsKey("addF"))
+        }
+        else if (map.containsKey("addF"))
         {
             addFriend(map.get("addF"));
         } else if (map.containsKey("relation"))
@@ -91,6 +92,10 @@ public class websocket
 
     private void getChat(String nameB)
     {
+        if(nameB.equals("sys")){
+            SendMessage(messageS.getSysChat(username));
+
+        }
         SendMessage(messageS.getChat(username, nameB));
     }
 

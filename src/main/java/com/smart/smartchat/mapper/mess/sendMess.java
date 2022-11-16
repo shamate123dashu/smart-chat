@@ -22,4 +22,6 @@ public interface sendMess
     public Integer updateMessage(Integer status,String message,String nameA,String nameB,Integer messType,String oldmess);
     @Select("SELECT * FROM message where (nameA=#{nameA} and nameB=#{nameB} and messType=#{messType}) or (nameA=#{nameB} and nameB=#{nameA} and messType=#{messType}) ORDER BY time ")
     public List<text> selectAllMess(String nameA,String nameB,Integer messType);
+    @Select("select * from message where nameB=#{username} and messType=0")
+    public List<text> selectSysMess(String username);
 }

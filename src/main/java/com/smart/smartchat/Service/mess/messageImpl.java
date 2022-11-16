@@ -94,6 +94,17 @@ public class messageImpl implements message
         System.out.println(s);
         return s;
     }
+    public String getSysChat(String username){
+        List<text> texts0 = sendMess.selectSysMess(username);
+        Map<String, text> messMap = new LinkedHashMap<>(
+        );
+        for (int i = 0; i < texts0.size(); i++)
+        {
+            messMap.put("allSys"+String.valueOf(i),texts0.get(i));
+        }
+        System.out.println(JSON.toJSONString(messMap));
+        return JSON.toJSONString(messMap);
+    }
     public String getChat(String nameA,String nameB){
         List<text> texts0 = sendMess.selectAllMess( nameB,nameA, 1);
         Map<String, text> messMap = new LinkedHashMap<>(

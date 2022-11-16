@@ -11,4 +11,5 @@ public interface message
 
     public String chat(String nameA, String nameB, String message);
     public String getChat(String nameA, String nameB);
+    public String getSysChat(String username);
 }
