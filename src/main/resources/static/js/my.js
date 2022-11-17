@@ -58,8 +58,9 @@ function getFriendsMess(friends) {
         "                                        <div class=\"icon-list-item active1\">\n" +
         "                                            <div class=\"avatar\"><img\n" +
         "                                                    src=\"images/james.jpg\" alt=\"\"\n" +
-        "                                                    class=\"img gray\"><i class=\"\"></i></div>\n" +
-        "                                            <div class=\"info\"><h3 class=\"nickname\"><span class=\"nickname-text\">";
+        "                                                    class=\"";
+    var con = "\"><i class=\"\"></i></div>\n" +
+        "                                            <div class=\"info\"><h3 class=\"nickname\"><span class=\"nickname-text2\">";
     var conb = "</h3>\n" +
         "<p class=\"msg\"><span></span></p></div>\n" +
         "</div>\n" +
@@ -73,10 +74,10 @@ function getFriendsMess(friends) {
         for (var j = 0; j < friends[i].length; j++) {
             if (friends[i][j].status == 1) {
                 onLine += 1;
-                var b = "<div ondblclick='relationChat(\"" + friends[i][j].username + cona + friends[i][j].username + "</span>在线" + conb;
+                var b = "<div ondblclick='relationChat(\"" + friends[i][j].username + cona + "img5" + con + friends[i][j].username + "</span>" + conb;
                 content.innerHTML += b;
             } else {
-                var c = "<div ondblclick='relationChat(\"" + friends[i][j].username + cona + friends[i][j].username + "</span>离线" + conb;
+                var c = "<div ondblclick='relationChat(\"" + friends[i][j].username + cona + "img6" + con + friends[i][j].username + "</span>" + conb;
                 outLine += c;
             }
         }
@@ -99,7 +100,7 @@ function relationChat(nameB) {
             "                class=\"\"></i>\n" +
             "            <div class=\"nameA0\" >";
         var c = "</div>\n" +
-            "            <button class=\"off01\" onclick=\"exitS('chatView" + nameB + "')\"></button>\n" +
+            "            <button class=\"off02\" onclick=\"exitS('chatView" + nameB + "')\"></button>\n" +
             "        </div>\n" +
             "        <div class=\"chatContent\" id='content" + nameB + "'>\n";
         var d = "<div class=\"messC\"><img src=\"images/james.jpg\"\n" +
@@ -200,16 +201,17 @@ function search02(mess) {
             "                                            <div class=\"ext\"><p class=\"attr\"></p></div>\n" +
             "                                            <div class=\"avatar\"><img\n" +
             "                                                    src=\"images/james.jpg\" alt=\"\"\n" +
-            "                                                    class=\"img gray\"><i class=\"\"></i></div>\n" +
-            "                                            <div class=\"info\"><h3 class=\"nickname\"><span class=\"nickname-text\" id='goodF'>";
+            "                                                    class=\"" ;
+        var con = "\"><i class=\"\"></i></div>\n" +
+            "                                            <div class=\"info\"><h3 class=\"nickname\"><span class=\"nickname-text2\" id='goodF'>";
         var conb = "</h3>\n" +
             "<p class=\"msg\"><span></span></p></div>\n" +
             "</div>\n";
         var b;
         if (mess.status == "1") {
-            b = cona + mess.username + "</span>在线" + conb;
+            b = cona + "img5"+con+mess.username + "</span>" + conb;
         } else {
-            b = cona + mess.username + "</span>离线" + conb;
+            b = cona + "img6"+con+mess.username + "</span>" + conb;
         }
         add.innerHTML = b;
         addB01.hidden = false;
@@ -282,7 +284,7 @@ function ViewChat() {
                 "        <div class=\"top1\">\n" +
                 "            <p class=\"timeView\"></p><img src=\"images/james.jpg\" alt=\"\" class=\"img1\"><i class=\"\"></i>\n" +
                 "            <div class=\"nameA0\">系统信息</div>\n" +
-                "            <button class=\"off01\" onclick=\"exitS('chatView_sys')\"></button>\n" +
+                "            <button class=\"off02\" onclick=\"exitS('chatView_sys')\"></button>\n" +
                 "        </div>\n" +
                 "        <div class=\"chatContent\" id=\"sys_content\">\n" +
                 "</div>\n" +
@@ -362,6 +364,7 @@ function getSys(mess) {
     }
 
 }
+
 function getSysChat(mess) {
     var sysContent = document.getElementById("sys_content");
     for (var item in mess) {
@@ -381,6 +384,7 @@ function getSysChat(mess) {
         }
     }
 }
+
 function getMess(mess) {
     //如果有新消息，添加到消息界面。
     var nameA = mess["mess"].nameA;
@@ -423,8 +427,9 @@ function getMess(mess) {
         document.getElementById("time" + nameA).innerText = mess["mess"].time.substring(0, 19);
     }
 }
+
 //添加好友按钮绑定
-function agree(name){
+function agree(name) {
     var relation = {
         "nameA": name,
         "relation": "0"
@@ -432,7 +437,8 @@ function agree(name){
     socket.send(JSON.stringify(relation));
     document.getElementById("commit" + name).innerHTML = "<div style='color: cornflowerblue;position: relative;left: 180px;font-size: 20px;width:100px'>已同意</div>";
 }
-function disagree(name){
+
+function disagree(name) {
     var relation = {
         "nameA": name,
         "relation": "-1"

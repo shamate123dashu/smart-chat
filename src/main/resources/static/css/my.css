@@ -1,4 +1,33 @@
+.main_view{
+    position: absolute;
+    top:0px;
+    left: 0px;
+    width: 281px;
+    height: 752px;
+    border: 3px solid #7bb8f9;
+    border-radius: 15px;
+    background: url("../images/bd.png")  no-repeat  ;
+    background-size: cover;
+}
+.chatPart{
+    position: relative;
+    top: -8px;
+    left: 284px;
+}
+.nickname-text{
+    position: absolute;
+    top:12px;
+    left: 90px;
+    font-size: 22px;
+}.nickname-text2{
+    position: relative;
+    top:-10px;
+    left: 15px;
+    font-size: 18px;
+}
 .title01 {
+    position: relative;
+    top: 10px;
     width: 130px; /* 宽度 */
     height: 44px; /* 高度 */
     border-width: 0px; /* 边框宽度 */
@@ -8,26 +37,57 @@
     outline: none; /* 不显示轮廓线 */
     font-family: Microsoft YaHei; /* 设置字体 */
     color: white; /* 字体颜色 */
+    opacity: 0.7;
 }
 
 .title02 {
     position: absolute;
     left: 247px;
     top: 0px;
-    width: 32px; /* 宽度 */
-    height: 32px;
+    width: 31px; /* 宽度 */
+    height: 31px;
     background: url('../images/down.png') no-repeat;
+    background-size: 100% auto;
+    border-color: #85f2ff;
+    border-radius: 15px;
+}
+.search_bar{
+    position: relative;
+    top: 10px;
+    left: 10px;
+}
+.searText{
+    width: 225px;
+    height: 23px;
+    background-color: #59c2f9;
+    border-color: #55ecf9;
+}
+.searButton{
+    position: absolute;
+    top: -3px;
+    left: 238px;
+    width: 31px; /* 宽度 */
+    height: 31px;
+    background: url('../images/110.png') no-repeat;
     background-size: 100% auto;
     border-color: #48fcff;
     border-radius: 15px;
 }
-
+.line_head{
+    position: relative;
+    top: 5px;
+    width: 279px;
+    height: 2px;
+    background-color: #119ef9;
+    border-bottom-left-radius: 15px;
+    border-bottom-right-radius: 15px;
+}
 .add {
     position: absolute;
     left: 247px;
-    top: 32px;
-    width: 32px; /* 宽度 */
-    height: 32px;
+    top: 42px;
+    width: 31px; /* 宽度 */
+    height: 31px;
     background: url('../images/add.png') no-repeat;
     background-size: 100% auto;
     border-color: #48fcff;
@@ -47,27 +107,31 @@
 
 .addFriend {
     position: relative;
-    width: 418px;
+    left: 277px;
+    top: -7px;
+    width: 408px;
     height: 320px;
     float: left;
     /*background: #ddebff;*/
     border: 2px solid #81bcff;
     border-radius: 15px;
+    background: url("../images/bd.png") no-repeat ;
+    background-size: cover;
 }
 
 .addTitle {
     position: absolute;
-    top: 35px;
-    left: 87px;
+    top: 5px;
+    left: 80px;
     font-family: "YouYuan";
+    font-size: 35px;
 }
 
 .search01 {
     height: 30px;
     width: 330px;
     position: absolute;
-    top: 100px;
-    left: 25px;
+    top: 97px;
     border: 2px black solid;
     border-radius: 15px;
 }
@@ -75,7 +139,7 @@
 .searchB {
     position: absolute;
     top: 100px;
-    left: 370px;
+    left: 375px;
     height: 30px;
     width: 30px;
     background: url("../images/search.png");
@@ -84,8 +148,8 @@
 }
 
 .off01 {
-    position: absolute;
-    left: 382px;
+    position: relative;
+    left: 376px;
     height: 30px;
     width: 32px;
     background: url("../images/off.png");
@@ -93,18 +157,28 @@
     border: #fdfdff;
     border-radius: 15px;
 }
-
+.off02{
+    position: relative;
+    top:-1px;
+    left: 379px;
+    height: 30px;
+    width: 32px;
+    background: url("../images/off.png");
+    background-size: 100% auto;
+    border: #fdfdff;
+    border-radius: 15px;
+}
 .af01 {
     position: absolute;
     top: 160px;
-    left: 25px;
+    left: 34px;
     width: 330px;
 }
 
 .addB {
     position: absolute;
     top: 183px;
-    left: 370px;
+    left: 376px;
     height: 30px;
     width: 30px;
     background: url("../images/add01.png");
@@ -114,19 +188,22 @@
 
 .chatView {
     position: relative;
-    width: 418px;
-    height: 758px;
+    left: -5px;
+    width: 410px;
+    height: 752px;
     /*background: #ddebff;*/
     float: left;
-    border: 2px solid #81bcff;
+    border: 3px solid #81bcff;
     border-radius: 15px;
+    background: url("../images/bd.png")  no-repeat  ;
+    background-size: cover;
 }
 
 .top1 {
-    background: rgb(255, 255, 255);
+    /*background: rgb(255, 255, 255);*/
     border-bottom: 1px solid #5cd3ff;
     position: relative;
-    width: 415px;
+    width: 413px;
     height: 60px;
     border-top-left-radius: 15px;
     border-top-right-radius: 15px;
@@ -166,17 +243,48 @@
     -webkit-border-radius: 50%
 }
 .img4 {
+    position: relative;
+    left: 12px;
+    top: 12px;
     display: block;
-    width: 50px;
-    height: 50px;
+    width: 60px;
+    height: 60px;
     border-radius: 50%;
     -moz-border-radius: 50%;
     -webkit-border-radius: 50%;
 }
+.img5 {
+    position: relative;
+    left: 10px;
+    top: 10px;
+    display: block;
+    width: 45px;
+    height: 45px;
+    border-radius: 50%;
+    -moz-border-radius: 50%;
+    -webkit-border-radius: 50%;
+}
+.img6{
+    position: relative;
+    left: 10px;
+    top: 10px;
+    display: block;
+    width: 45px;
+    height: 45px;
+    border-radius: 50%;
+    -moz-border-radius: 50%;
+    -webkit-border-radius: 50%;
+    -webkit-filter: grayscale(100%);
+    -moz-filter: grayscale(100%);
+    -ms-filter: grayscale(100%);
+    -o-filter: grayscale(100%);
+    filter: grayscale(100%);
+    filter: gray;
+}
 .timeView {
     position: absolute;
-    top: 40px;
-    left: 280px;
+    top: 25px;
+    left: 253px;
 }
 
 .nameA0 {
@@ -213,19 +321,27 @@
 }
 
 .inputView {
-    background: rgb(255, 255, 255);
-    border-top: 1px solid #0f16ff;
+    /*background: rgb(255, 255, 255);*/
+    opacity: 0.7;
+    border-top: 3px solid #080f10;
+    border-left:2px solid #080f10 ;
     position: absolute;
+    left: -1px;
     top: 641px;
-    width: 415px;
+    width: 412px;
     height: 100px;
 }
 .textA {
-    width: 365px;
-    height: 100px;
+    position: absolute;
+    /*background-color:transparent;*/
+    /*top:10px;*/
+    opacity: 0.9;
+    width: 363px;
+    height: 105px;
     font-size: 20px;
-    /*border-bottom-left-radius: 15px;*/
-    border-top: #3295ff solid 1px;
+    font-family: "微软雅黑";
+    border-bottom-left-radius: 15px;
+    /*border-top: #3295ff solid 1px;*/
     border-left: 0px;
     border-right: 0px;
     border-bottom: 0px;
@@ -233,10 +349,14 @@
 }
 
 .sendB {
+    position: absolute;
+    top: -2px;
+    right: 1px;
     float: right;
     width: 50px;
-    height: 114px;
+    height: 113px;
     font-size: 25px;
+
     font-family: "Andale Mono";
     border-color: #4377f9;
     border-bottom-right-radius: 15px;
@@ -275,19 +395,6 @@
     width: 340px;
     margin-bottom: 15px;
 }
-input-search01 {
-    width: 195px;
-    height: 32px;
-    line-height: 32px;
-    border: 0;
-    border-radius: 2px;
-    -moz-border-radius: 2px;
-    -webkit-border-radius: 2px;
-    background-color: #e4e5e7;
-    color: #212020;
-    padding-left: 30px;
-    font-size: 12px
-}
 .oim-main-list-pane {
     width: 100%;
     position: absolute;
@@ -296,9 +403,6 @@ input-search01 {
     bottom: 0;
     left: 0
 }
-
-
-
 
 .scrollC {
     position: absolute;
@@ -340,7 +444,7 @@ input-search01 {
 .icon-list-item.active1 {
     background: #d8eeff;
     border: 1px solid #5cd3ff;
-    width: 265px;
+    width: 259px;
     height: 78.5px;
     border-radius: 15px;
 }
@@ -357,5 +461,6 @@ input-search01 {
     -moz-border-radius: 50%;
     -webkit-border-radius: 50%
 }
+
 
 
