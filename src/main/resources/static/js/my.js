@@ -392,16 +392,16 @@ function getMess(mess) {
     var chatS = document.getElementById("chatView" + nameA);
     if (chatQ == null) {
         var news = document.getElementById("news");
-        var a = "<div class=\"icon-list-item active\" id='chatQ" + nameA + "' ondblclick='relationChat(\"" + nameA + "\")'>\n";
-        var k = "                                    <div class=\"ext\"><p class=\"attr\" id='net" + nameA + "'>";
+        var a = "<div class=\"icon-list-item active2\" id='chatQ" + nameA + "' ondblclick='relationChat(\"" + nameA + "\")'>\n";
+        var k = "                                    <div class=\"messTime\"><p class=\"attr\" id='net" + nameA + "'>";
         var b = "</p>\n" +
             "                                    </div>\n" +
             "                                    <div class=\"avatar\"><img\n" +
             "                                            src=\"images/james.jpg\"\n" +
-            "                                            alt=\"\" class=\"img gray\"><i\n" +
+            "                                            alt=\"\" class=\"img7\"><i\n" +
             "                                            class=\"\"></i></div>\n" +
             "                                    <div class=\"info\"><h3 class=\"nickname\"><span\n" +
-            "                                            class=\"nickname-text\">";
+            "                                            class=\"nickname-text3\">";
         var c = "</span></h3>\n" +
             "                                        <p class=\"msg\"><span id='new" + nameA + "'>";
         var d = "</span></p></div>\n" +
