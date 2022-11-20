@@ -201,7 +201,7 @@ function search02(mess) {
             "                                            <div class=\"ext\"><p class=\"attr\"></p></div>\n" +
             "                                            <div class=\"avatar\"><img\n" +
             "                                                    src=\"images/james.jpg\" alt=\"\"\n" +
-            "                                                    class=\"" ;
+            "                                                    class=\"";
         var con = "\"><i class=\"\"></i></div>\n" +
             "                                            <div class=\"info\"><h3 class=\"nickname\"><span class=\"nickname-text2\" id='goodF'>";
         var conb = "</h3>\n" +
@@ -209,9 +209,9 @@ function search02(mess) {
             "</div>\n";
         var b;
         if (mess.status == "1") {
-            b = cona + "img5"+con+mess.username + "</span>" + conb;
+            b = cona + "img5" + con + mess.username + "</span>" + conb;
         } else {
-            b = cona + "img6"+con+mess.username + "</span>" + conb;
+            b = cona + "img6" + con + mess.username + "</span>" + conb;
         }
         add.innerHTML = b;
         addB01.hidden = false;
@@ -302,17 +302,17 @@ function getSys(mess) {
     var timestampToTime1;
     if (sysMess == null) {
         var news = document.getElementById("news");
-        var a = "<div class='icon-list-item active'";
+        var a = "<div class='icon-list-item active2'";
         var k = ">\n" +
-            "                                    <div class=\"ext\"><p class=\"attr\" id='time_sys'>";
+            "                                    <div class=\"messTime\"><p class=\"attr\" id='time_sys'>";
         var b = "</p>\n" +
             "                                    </div>\n" +
             "                                    <div class=\"avatar\"><img\n" +
             "                                            src=\"images/james.jpg\"\n" +
-            "                                            alt=\"\" class=\"img gray\"><i\n" +
+            "                                            alt=\"\" class=\"img7\"><i\n" +
             "                                            class=\"\"></i></div>\n" +
             "                                    <div class=\"info\"><h3 class=\"nickname\"><span\n" +
-            "                                            class=\"nickname-text\">" + "系统信息";
+            "                                            class=\"nickname-text3\">" + "系统信息";
         var c = "</span></h3>\n" +
             "                                        <p class=\"msg\"><span id='mess_sys'>";
         var d = "</span></p></div>\n" +

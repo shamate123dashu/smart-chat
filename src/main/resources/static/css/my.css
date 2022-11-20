@@ -516,16 +516,16 @@
 
 .messTime {
     position: relative;
-    left: 137px;
-    top:55px;
+    left: 135px;
+    top:48px;
     width: 150px;
     font-size: 10px;
 }
 .msg{
     position: relative;
     top:-55px;
-    left: 65px;
-    font-size: 14px;
+    left: 68px;
+    font-size: 10px;
     width: 190px;
     height: 20px;
     display:-webkit-box;				/*弹性伸缩盒子*/

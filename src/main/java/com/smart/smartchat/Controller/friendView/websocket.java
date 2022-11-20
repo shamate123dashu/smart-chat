@@ -21,8 +21,9 @@ import java.io.IOException;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
+
 //configurator= WebSocketConfig.class告诉websocket哪个是它的配置类。然后他才将配置类中的
-@ServerEndpoint(value = "/friends",configurator= WebSocketConfig.class)
+@ServerEndpoint(value = "/friends", configurator = WebSocketConfig.class)
 @Component
 public class websocket
 {
@@ -48,17 +49,18 @@ public class websocket
 
 
     @OnOpen
-    public void onOpen(Session session,EndpointConfig config)
+    public void onOpen(Session session, EndpointConfig config)
     {
         this.session = session;
-        HttpSession httpSession= (HttpSession) config.getUserProperties().get(HttpSession.class.getName());
-        this.username =(String)httpSession.getAttribute("username");
+        HttpSession httpSession = (HttpSession) config.getUserProperties().get(HttpSession.class.getName());
+        this.username = (String) httpSession.getAttribute("username");
         this.basicRemote = session.getBasicRemote();
         webSocketMap.put(username, this);
         count++;
         //发送自身好友在线情况
         this.SendMessage(friendView.checkFriend01(this.username));
         this.SendOnline();
+        this.sendUnRead();
     }
 
     @OnMessage
@@ -68,14 +70,13 @@ public class websocket
         if (map.containsKey("mess"))
         {
             newMess(map);
-        }else if (map.containsKey("GetChat")){
+        } else if (map.containsKey("GetChat"))
+        {
             getChat(map.get("GetChat"));
-        }
-        else if (map.containsKey("search"))
+        } else if (map.containsKey("search"))
         {
             search(map);
-        }
-        else if (map.containsKey("addF"))
+        } else if (map.containsKey("addF"))
         {
             addFriend(map.get("addF"));
         } else if (map.containsKey("relation"))
@@ -83,22 +84,6 @@ public class websocket
             addRelation(map);
         }
     }
-
-    private void newMess(Map<String, String> map)
-    {
-        String chat = messageS.chat(username, map.get("nameA"), map.get("mess"));
-        SendFriend( map.get("nameA"),chat);
-    }
-
-    private void getChat(String nameB)
-    {
-        if(nameB.equals("sys")){
-            SendMessage(messageS.getSysChat(username));
-
-        }
-        SendMessage(messageS.getChat(username, nameB));
-    }
-
 
     @OnClose
     public void onClose()
@@ -125,7 +110,7 @@ public class websocket
         }
     }
 
-    //登录或者下线后，将状态发给好友。
+    //登录或者下线后，将状态发给好友。刷新好友的好友列表
     public void SendOnline()
     {
         //查找在线的好友
@@ -135,6 +120,22 @@ public class websocket
         {
             SendFriend(name, friendView.checkFriend01(name));
         }
+    }
+
+    private void newMess(Map<String, String> map)
+    {
+        String chat = messageS.chat(username, map.get("nameA"), map.get("mess"));
+        SendFriend(map.get("nameA"), chat);
+    }
+
+    private void getChat(String nameB)
+    {
+        if (nameB.equals("sys"))
+        {
+            SendMessage(messageS.getSysChat(username));
+
+        }
+        SendMessage(messageS.getChat(username, nameB));
     }
 
     private void search(Map<String, String> map)
@@ -181,15 +182,27 @@ public class websocket
      *
      * @param map
      */
-    private void addRelation(Map<String,String> map)
+    private void addRelation(Map<String, String> map)
     {
         Integer relation = Integer.parseInt(map.get("relation"));
         System.out.println(map.get("nameA"));
-        friendView.addRelation(map.get("nameA"),username, relation);
-        if (relation!=-1){
+        friendView.addRelation(map.get("nameA"), username, relation);
+        if (relation != -1)
+        {
             System.out.println(relation);
             SendFriend(map.get("nameA"), friendView.checkFriend01(map.get("nameA")));
             this.SendMessage(friendView.checkFriend01(this.username));
+        }
+    }
+
+    //登录成功后，将未读的消息发送给浏览器
+    private void sendUnRead()
+    {
+        List<String> unreadMess = messageS.getUnreadMess(username);
+        for (String mess :
+                unreadMess)
+        {
+            SendMessage(mess);
         }
     }
 }
