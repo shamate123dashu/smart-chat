@@ -42,7 +42,7 @@ function friendDis2() {
             getSys(mess);
         } else if (mess.hasOwnProperty("search")) {
             search02(mess);
-        } else if (mess.hasOwnProperty("aF")) {
+        } else if (mess.hasOwnProperty("aF"))   {
             SendAddFriends(mess);
         }
     }
@@ -174,6 +174,11 @@ function exitS(od) {
     var s = document.getElementById(od);
     s.hidden = true;
 }
+function exitN(od) {
+    var s = document.getElementById("chatQ"+od);
+    s.hidden = true;
+    socket.send("{\"hadRead\":\""+od+"\"}");
+}
 
 function search01() {
     document.getElementById("addF01").innerHTML = "";
@@ -257,6 +262,7 @@ function timestampToTime(timestamp) {
 
 function sendMess(a) {
     var message = document.getElementById("text" + a);
+    var news=message.value;
     var mess = {
         "mess": message.value,
         "nameA": a
@@ -272,6 +278,16 @@ function sendMess(a) {
     content.innerHTML += c + message.value + d;
     message.value = "";
     socket.send(JSON.stringify(mess));
+    var MessNotice = document.getElementById("chatQ"+a);
+    if(MessNotice!=null){
+        if (MessNotice.hidden==true){
+            MessNotice.hidden=false;
+        }
+    }
+    var mess2={
+        "mess":{"nameA":a,"message":news,"time":Date.now()}
+    }
+    getMess(mess2);
 }
 
 //是否同意，
@@ -392,8 +408,8 @@ function getMess(mess) {
     var chatS = document.getElementById("chatView" + nameA);
     if (chatQ == null) {
         var news = document.getElementById("news");
-        var a = "<div class=\"icon-list-item active2\" id='chatQ" + nameA + "' ondblclick='relationChat(\"" + nameA + "\")'>\n";
-        var k = "                                    <div class=\"messTime\"><p class=\"attr\" id='net" + nameA + "'>";
+        var a = "<div class=\"icon-list-item active2\"  id='chatQ" + nameA + "' onmouseout=\"mouseOut('off" + nameA + "')\" onmouseover=\"mouseIn('off" + nameA + "')\" ondblclick='relationChat(\"" + nameA + "\")'>\n";
+        var k = "<button class=\"off03\" hidden=true id='off"+nameA+"' onclick=\"exitN('"+nameA+"')\"></button><div class=\"messTime\"><p class=\"attr\" id='net" + nameA + "'>";
         var b = "</p>\n" +
             "                                    </div>\n" +
             "                                    <div class=\"avatar\"><img\n" +
@@ -410,12 +426,26 @@ function getMess(mess) {
         var timestampToTime1 = timestampToTime(mess["mess"].time);
         u = a + k + timestampToTime1 + b + nameA + c + mess["mess"].message + d;
         news.innerHTML += u;
+        //绑定
+        // var chatQ2 = document.getElementById("chatQ"+nameA);
+        // var off2 = document.getElementById("off"+nameA);
+        // chatQ2.addEventListener('mouseover',function () {
+        //     off2.hidden=false;
+        // });
+        // chatQ2.addEventListener('mouseout',function () {
+        //     off2.hidden=true;
+        // });
+        // chatQ2.onmouseover=function (){
+        //     off2.hidden=false;
+        // };chatQ2.onmouseout=function (){
+        //     off2.hidden=true;
+        // };
     } else {
         //新消息刷新时间和信息
         document.getElementById("new" + nameA).innerText = mess["mess"].message;
         document.getElementById("net" + nameA).innerText = timestampToTime(mess["mess"].time);
     }
-    if (chatS != null) {
+    if (chatS != null&&mess.hasOwnProperty("nameB")) {
         var a = "<div class=\"messC\"><img src=\"images/james.jpg\"\n" +
             "                                alt=\"\" class=\"img2\"><i\n" +
             "        class=\"\"></i>\n" +
@@ -445,6 +475,14 @@ function disagree(name) {
     }
     socket.send(JSON.stringify(relation));
     document.getElementById("commit" + name).innerHTML = "<div  style='color: cornflowerblue;position: relative;left: 180px;font-size: 20px'>已拒绝</div>";
+}
+
+function mouseIn(a){
+    var off2 = document.getElementById(a);
+    off2.hidden=false;
+}function mouseOut(a){
+    var off2 = document.getElementById(a);
+    off2.hidden=true;
 }
 
 

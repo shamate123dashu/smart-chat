@@ -1,4 +1,4 @@
-package com.smart.smartchat.Controller.friendView;
+package com.smart.smartchat.webSocket;
 
 import com.alibaba.fastjson2.JSON;
 import com.smart.smartchat.Bean.user;
@@ -73,7 +73,11 @@ public class websocket
         } else if (map.containsKey("GetChat"))
         {
             getChat(map.get("GetChat"));
-        } else if (map.containsKey("search"))
+        }else if (map.containsKey("hadRead")){
+            System.out.println(map.get("hadRead"));
+            messageS.hadReadFor(map.get("hadRead"),username);
+        }
+        else if (map.containsKey("search"))
         {
             search(map);
         } else if (map.containsKey("addF"))

@@ -11,7 +11,6 @@ import org.springframework.stereotype.Service;
 import java.sql.Timestamp;
 import java.util.*;
 
-
 @Service
 public class messageImpl implements message
 {
@@ -111,7 +110,7 @@ public class messageImpl implements message
     public String getChat(String nameA, String nameB)
     {
         List<text> texts0 = sendMess.selectAllMess(nameB, nameA, 1);
-        sendMess.updateMessageStatus(nameB, nameA, 1);
+//        sendMess.updateMessageStatus(nameB, nameA, 1);
         Map<String, text> messMap = new LinkedHashMap<>(
         );
         for (int i = 0; i < texts0.size(); i++)
@@ -131,42 +130,63 @@ public class messageImpl implements message
      */
     public List<String> getUnreadMess(String username)
     {
-        Collection<text> newest = getNewest(sendMess.unreadMessFor(username, 0, 1));
-        Map<String,text> map=new HashMap<>();
+        Collection<text> newest = getNewest(username);
+        System.out.println(newest);
+        Map<String, text> map = new HashMap<>();
         Iterator<text> iterator = newest.iterator();
-        List<String> unRead=new ArrayList<>();
-        while (iterator.hasNext()){
-            map.put("mess",iterator.next());
+        List<String> unRead = new ArrayList<>();
+        while (iterator.hasNext())
+        {
+            map.put("mess", iterator.next());
             unRead.add(JSON.toJSONString(map));
         }
         //处理系统信息
         List<text> unreadMess = sendMess.unreadMessFor(username, 0, 0);
-        if (unreadMess.size()>0){
+        if (unreadMess.size() > 0)
+        {
             unRead.add(getUnreadSys(unreadMess));
         }
+        System.out.println(unRead);
         return unRead;
     }
+
+    public void hadReadFor(String nameA, String nameB)
+    {
+        sendMess.updateMessageStatus(nameA, nameB, 1);
+    }
+
     /**
      * 查询未读的系统信息
+     *
      * @return
      */
-    private String getUnreadSys(List<text> unreadMess){
-        Map<String,text> map=new HashMap<>();
-            map.put("sys0",unreadMess.get(0));
+    private String getUnreadSys(List<text> unreadMess)
+    {
+        Map<String, text> map = new HashMap<>();
+        map.put("sys0", unreadMess.get(0));
         return JSON.toJSONString(map);
     }
 
     /**
      * 筛选用户未读的最新消息。
-     * @param unreadMess
+     *
+     * @param username
      * @return
      */
-    private Collection<text> getNewest(List<text> unreadMess){
+    private Collection<text> getNewest(String username)
+    {
+        List<text> unreadMess = sendMess.unreadMessFor(username, 0, 1);
         Map<String, text> map = new HashMap<>();
         for (int i = 0; i < unreadMess.size(); i++)
         {
-            if (!map.containsKey(unreadMess.get(i).getNameA())){
-                map.put(unreadMess.get(i).getNameA(),unreadMess.get(i));
+            if (unreadMess.get(i).getNameA().equals(username))
+            {
+                unreadMess.get(i).setNameA(unreadMess.get(i).getNameB());
+            }
+            if (!map.containsKey(unreadMess.get(i).getNameA()))
+            {
+                System.out.println(unreadMess.get(i));
+                map.put(unreadMess.get(i).getNameA(), unreadMess.get(i));
             }
         }
         return map.values();

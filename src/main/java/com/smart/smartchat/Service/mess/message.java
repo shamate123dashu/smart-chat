@@ -15,4 +15,5 @@ public interface message
     public String getChat(String nameA, String nameB);
     public String getSysChat(String username);
     public List<String> getUnreadMess(String username);
+    public void hadReadFor(String nameA,String nameB);
 }

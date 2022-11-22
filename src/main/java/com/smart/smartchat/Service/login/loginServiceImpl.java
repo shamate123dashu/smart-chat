@@ -4,7 +4,7 @@ import com.smart.smartchat.Bean.user;
 import com.smart.smartchat.mapper.login.check_user;
 
 
-import com.smart.smartchat.Controller.friendView.websocket;
+import com.smart.smartchat.webSocket.websocket;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;

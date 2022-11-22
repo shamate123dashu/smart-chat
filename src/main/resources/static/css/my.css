@@ -183,6 +183,16 @@
     background-size: 100% auto;
     border: #fdfdff;
     border-radius: 15px;
+}.off03 {
+    position: absolute;
+    top:3px;
+    left: 226px;
+    height: 30px;
+    width: 32px;
+    background: url("../images/off.png");
+    background-size: 100% auto;
+    border: #fdfdff;
+    border-radius: 15px;
 }
 
 .af01 {
